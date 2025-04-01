@@ -2,6 +2,8 @@ import "reflect-metadata";
 import { AppDataSource } from "./data-source/index.js";
 import { User } from "./entity/User.js";
 import { createApp } from "./app.js";
+import { Address, AddressType } from "./entity/Address.js";
+import { BankDetails } from "./entity/BankDetails.js";
 
 async function main() {
   try {
@@ -25,6 +27,48 @@ async function main() {
 
       await userRepository.save(admin);
       console.log("Admin user created successfully");
+    }
+
+    // add a sample address
+    const addressRepository = AppDataSource.getRepository(Address);
+    const addressCount = await addressRepository.count();
+
+    if (addressCount === 0) {
+      console.log("Creating sample address...");
+      const address = addressRepository.create({
+        street: "123 Main St",
+        city: "Anytown",
+        state: "CA",
+        zipCode: "12345",
+        country: "USA",
+        isPrimary: true,
+        addressType: AddressType.HOME,
+        userId: "07ee4905-904b-4fc6-8d65-67ac84eb7887",
+      });
+
+      // add a sample bank details
+      const bankDetailsRepository = AppDataSource.getRepository(BankDetails);
+      const bankDetailsCount = await bankDetailsRepository.count();
+
+      if (bankDetailsCount === 0) {
+        console.log("Creating sample bank details...");
+        const bankDetails = bankDetailsRepository.create({
+          bankName: "Bank of America",
+          accountNumber: "1234567890",
+          routingNumber: "123456789",
+          swiftCode: "123456789",
+          iban: "1234567890",
+          accountHolderName: "John Doe",
+          isPrimary: true,
+          userId: "07ee4905-904b-4fc6-8d65-67ac84eb7887",
+        });
+
+        await bankDetailsRepository.save(bankDetails);
+        console.log("Sample bank details created successfully");
+      }
+
+      await addressRepository.save(address);
+      console.log("Sample address created successfully");
     }
 
     // Create and start Express server

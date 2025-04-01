@@ -8,10 +8,11 @@
     "dev": "nodemon --exec tsx src/index.ts",
     "start": "tsx src/index.ts",
     "build": "tsc",
-    "typeorm": "typeorm-ts-node-commonjs",
+    "typeorm": "tsx ./node_modules/typeorm/cli.js",
     "migration:generate": "npm run typeorm -- migration:generate -d src/data-source/index.ts",
     "migration:run": "npm run typeorm -- migration:run -d src/data-source/index.ts",
     "migration:revert": "npm run typeorm -- migration:revert -d src/data-source/index.ts",
+    "migration:show": "npm run typeorm -- migration:show -d src/data-source/index.ts",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [],
